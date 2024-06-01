@@ -13,6 +13,14 @@ import {
   PolicyStatement,
   Effect,
 } from "aws-cdk-lib/aws-iam";
+import { IBucket } from "aws-cdk-lib/aws-s3";
+
+// Created interface for accessing "photosBucket" S3 bucket from DataStack.ts
+interface AuthStackProps extends StackProps {
+  photosBucket: IBucket;
+}
+
+// This stack is created for Authentication for the users
 
 export class AuthStack extends Stack {
   public userPool: UserPool;
@@ -22,13 +30,13 @@ export class AuthStack extends Stack {
   private unAuthenticatedRole: Role;
   private adminRole: Role;
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: AuthStackProps) {
     super(scope, id, props);
 
     this.createUserPool(); // Creating User Pool
     this.createUserPoolClient(); // Creating User Pool Client
     this.createIdentityPool(); // Creating Identity Pool for issuing Temporary access token to the user for accessing AWS Resources. Refer - https://chatgpt.com/c/78c0ea90-8d09-4e38-b754-6b2d6d66acd5
-    this.createRoles(); // Creating Idetity Roles
+    this.createRoles(props.photosBucket); // Creating Idetity Roles
     this.attachRoles(); // Attaching Roles
     this.createAdminsGroup(); // Creating Admins group
   }
@@ -88,7 +96,7 @@ export class AuthStack extends Stack {
     });
   }
 
-  private createRoles() {
+  private createRoles(photosBucket: IBucket) {
     this.authenticatedRole = new Role(this, "CognitoDefaultAuthenticatedRole", {
       assumedBy: new FederatedPrincipal(
         "cognito-identity.amazonaws.com",
@@ -138,8 +146,8 @@ export class AuthStack extends Stack {
     this.adminRole.addToPolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: ["s3:ListAllMyBuckets"],
-        resources: ["*"],
+        actions: ["s3:PutObject", "s3:PutObjectAcl"],
+        resources: [photosBucket.bucketArn + "/*"], // Here we are giving admins access to read and write in AWS S3 bucket "photosBucket" only by appending Bucket ARN
       })
     );
   }

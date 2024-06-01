@@ -7,6 +7,7 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 import { join } from "path";
 
+// This stack is used for running NodeJS server code file "spacesHandler.ts"
 interface LambdaStackProps extends StackProps {
   spacesTable: ITable;
 }

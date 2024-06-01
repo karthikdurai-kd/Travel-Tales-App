@@ -5,9 +5,14 @@ import NavBar from "./components/NavBar";
 import { useState } from "react";
 import { AuthService } from "./services/AuthService";
 import LoginComponent from "./components/LoginComponent";
+import { DataService } from "./services/DataService";
+import CreateSpace from "./components/spaces/CreateSpace";
 
-// Creating AuthService object
+// Creating AuthService class object for calling Authentication APIs
 const authService = new AuthService();
+
+// Creating DataService class object for calling APIs to save places
+const dataService = new DataService(authService);
 
 export default function App() {
   const [userName, setUserName] = useState<string | undefined>(undefined);
@@ -40,7 +45,7 @@ export default function App() {
         },
         {
           path: "/createSpace",
-          element: <div>Create space page</div>,
+          element: <CreateSpace dataService={dataService} />,
         },
         {
           path: "/spaces",

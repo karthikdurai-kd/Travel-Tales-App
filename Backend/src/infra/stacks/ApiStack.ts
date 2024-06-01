@@ -9,6 +9,8 @@ import {
 import { IUserPool } from "aws-cdk-lib/aws-cognito";
 import { Construct } from "constructs";
 
+// Thi stack is used for linking API's with Lambda function which has the NodeJS Server file
+
 interface ApiStackProps extends StackProps {
   // This is the standard away of creating and accessing props which comes to this stack from some other stack
   spacesLambdaIntegration: LambdaIntegration;
