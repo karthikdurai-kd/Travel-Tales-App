@@ -10,6 +10,7 @@ import { getSpaces } from "./GetSpace";
 import { updateSpace } from "./UpdateSpace";
 import { deleteSpace } from "./deleteSpace";
 import { JsonError, MissingFieldError } from "../validator/Validator";
+import { addCORSHeader } from "../../utils/addCORSHeader";
 
 // Creating DynamoDB object
 const dynamoDBObj = new DynamoDBClient({});
@@ -17,25 +18,29 @@ const dynamoDBObj = new DynamoDBClient({});
 // "spacesHandler" function that returns a simple message with a 200 status code
 async function spacesHandler(event: APIGatewayProxyEvent, context: Context) {
   // Response message
-  let message: string;
+  let response: APIGatewayProxyResult;
 
   try {
     switch (event.httpMethod) {
       case "GET":
         const getResponse = await getSpaces(event, dynamoDBObj);
-        return getResponse;
+        response = getResponse;
+        break;
 
       case "POST":
         const postResponse = await postSpaces(event, dynamoDBObj); // Calling postSpace function which handles the logic of inserting data into DynamoDB Table
-        return postResponse;
+        response = postResponse;
+        break;
 
       case "PUT":
         const putResponse = await updateSpace(event, dynamoDBObj); // Calling postSpace function which handles the logic of inserting data into DynamoDB Table
-        return putResponse;
+        response = putResponse;
+        break;
 
       case "DELETE":
         const deleteResponse = await deleteSpace(event, dynamoDBObj);
-        return deleteResponse;
+        response = deleteResponse;
+        break;
 
       default:
         break;
@@ -62,11 +67,7 @@ async function spacesHandler(event: APIGatewayProxyEvent, context: Context) {
     }
   }
 
-  const response: APIGatewayProxyResult = {
-    statusCode: 200,
-    body: JSON.stringify(message),
-  };
-  console.log(event);
+  addCORSHeader(response); // Adding CORS Header
   return response;
 }
 

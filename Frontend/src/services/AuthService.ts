@@ -22,7 +22,7 @@ export class AuthService {
   private user: CognitoUser | undefined;
 
   // JWT Token that we from AWS Cognito
-  private jwtToken: string | undefined;
+  public jwtToken: string | undefined;
 
   // Cognito User Pool Temporary Credentials
   private temporaryCredentials: object | undefined;

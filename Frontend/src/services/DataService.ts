@@ -1,6 +1,9 @@
 import { AuthService } from "./AuthService";
-import { DataStack } from "../../../Backend/outputs.json";
+import { DataStack, ApiStack } from "../../../Backend/outputs.json";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+
+// API Endpoint of our backend AWS API Gateway
+const travelTalesAPIEndpoint = ApiStack.SpacesApiEndpoint36C4F3B6 + "spaces";
 
 export class DataService {
   // Accessing AuthService methods like getting tokens etc...
@@ -15,12 +18,25 @@ export class DataService {
 
   // createSpace method where "name", "location", "photo" will be saved in backend dynamodb table
   public async createSpace(name: string, location: string, photo?: File) {
-    console.log("calling create space!!");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const spaceData = {} as any;
+    spaceData.name = name;
+    spaceData.location = location;
     if (photo) {
       const uploadUrl = await this.uploadPublicFile(photo);
-      console.log(uploadUrl);
+      spaceData.photoURL = uploadUrl;
     }
-    return "123";
+    // Now we will call POST API for saving data - https://nvmj5xcujb.execute-api.us-east-1.amazonaws.com/prod/spaces
+    const createSpaceAPIResponse = await fetch(travelTalesAPIEndpoint, {
+      method: "POST",
+      body: JSON.stringify(spaceData),
+      headers: {
+        Authorization: this.authService.jwtToken!, // We are using "!" because it indicates optional or access data if it is available
+      },
+    });
+    const createSpaceAPIResponseJSON = await createSpaceAPIResponse.json();
+    console.log(createSpaceAPIResponseJSON);
+    return createSpaceAPIResponseJSON.id;
   }
 
   public isAuthorized() {
