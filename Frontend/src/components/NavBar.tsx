@@ -7,8 +7,8 @@ export default function NavBar({ userName }: NavBarProps) {
   function renderLoginLogout() {
     if (userName) {
       return (
-        <NavLink to="/logout" style={{ float: "right" }}>
-          {userName}
+        <NavLink to="/" style={{ float: "right" }}>
+          <span> {userName}</span>
         </NavLink>
       );
     } else {

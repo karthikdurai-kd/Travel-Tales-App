@@ -7,6 +7,9 @@ import { AuthService } from "./services/AuthService";
 import LoginComponent from "./components/LoginComponent";
 import { DataService } from "./services/DataService";
 import CreateSpace from "./components/spaces/CreateSpace";
+import Spaces from "./components/spaces/Spaces";
+import HomePage from "./components/HomePage";
+import ProfilePage from "./components/ProfilePage";
 
 // Creating AuthService class object for calling Authentication APIs
 const authService = new AuthService();
@@ -28,7 +31,7 @@ export default function App() {
       children: [
         {
           path: "/",
-          element: <div>Hello world!</div>,
+          element: <HomePage />,
         },
         {
           path: "/login",
@@ -41,7 +44,7 @@ export default function App() {
         },
         {
           path: "/profile",
-          element: <div>Profile page</div>,
+          element: <ProfilePage />,
         },
         {
           path: "/createSpace",
@@ -49,7 +52,7 @@ export default function App() {
         },
         {
           path: "/spaces",
-          element: <div>Spaces page </div>,
+          element: <Spaces dataService={dataService} />,
         },
       ],
     },

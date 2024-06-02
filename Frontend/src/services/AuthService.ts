@@ -27,6 +27,14 @@ export class AuthService {
   // Cognito User Pool Temporary Credentials
   private temporaryCredentials: object | undefined;
 
+  // Check if the user is logged in or not
+  public isAuthorized() {
+    if (this.user) {
+      return true;
+    }
+    return false;
+  }
+
   public async login(
     userName: string,
     password: string

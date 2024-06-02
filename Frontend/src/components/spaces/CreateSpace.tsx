@@ -44,7 +44,13 @@ export default function CreateSpace({ dataService }: CreateSpaceProps) {
 
   function renderForm() {
     if (!dataService.isAuthorized()) {
-      return <NavLink to={"/login"}>Please login</NavLink>;
+      return (
+        <NavLink to={"/login"}>
+          <div className="button-div-create-space">
+            <button className="login-button">Login</button>
+          </div>
+        </NavLink>
+      );
     }
     return (
       <form onSubmit={(e) => handleSubmit(e)} className="create-space-form">

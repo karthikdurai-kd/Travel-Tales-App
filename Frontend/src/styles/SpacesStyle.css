@@ -1,12 +1,8 @@
-.create-space-form {
+.page-heading {
   text-align: center;
 }
 
-.action-result {
-  text-align: center;
-}
-
-.login-button {
+.get-started-button {
   background: #2c3e50;
   color: white;
   border: none;
@@ -17,7 +13,6 @@
   transition: background 0.3s;
 }
 
-.button-div-create-space {
+.button-div {
   text-align: center;
-  margin-top: 50px;
 }

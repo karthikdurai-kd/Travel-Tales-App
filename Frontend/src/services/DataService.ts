@@ -1,6 +1,7 @@
 import { AuthService } from "./AuthService";
 import { DataStack, ApiStack } from "../../../Backend/outputs.json";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { SpaceEntry } from "../model/SpaceEntry";
 
 // API Endpoint of our backend AWS API Gateway
 const travelTalesAPIEndpoint = ApiStack.SpacesApiEndpoint36C4F3B6 + "spaces";
@@ -14,6 +15,25 @@ export class DataService {
 
   constructor(authService: AuthService) {
     this.authService = authService;
+  }
+
+  // Upload Public file method where we will save photos in S3 Bucket and get the url of uploaded photo
+  private async uploadPublicFile(file: File) {
+    const credentials = await this.authService.getTemporaryCredentials();
+    if (!this.s3Client) {
+      this.s3Client = new S3Client({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        credentials: credentials as any,
+        region: this.awsRegion,
+      });
+    }
+    const command = new PutObjectCommand({
+      Bucket: DataStack.TableFinderBucketName,
+      Key: file.name,
+      Body: file,
+    });
+    await this.s3Client.send(command);
+    return `https://${command.input.Bucket}.s3.${this.awsRegion}.amazonaws.com/${command.input.Key}`;
   }
 
   // createSpace method where "name", "location", "photo" will be saved in backend dynamodb table
@@ -39,26 +59,25 @@ export class DataService {
     return createSpaceAPIResponseJSON.id;
   }
 
-  public isAuthorized() {
-    return true;
+  // Place Reserve method
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public reserveSpace(spaceId: string) {
+    return "123";
   }
 
-  // Upload Public file method where we will save photos in S3 Bucket and get the url of uploaded photo
-  private async uploadPublicFile(file: File) {
-    const credentials = await this.authService.getTemporaryCredentials();
-    if (!this.s3Client) {
-      this.s3Client = new S3Client({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        credentials: credentials as any,
-        region: this.awsRegion,
-      });
-    }
-    const command = new PutObjectCommand({
-      Bucket: DataStack.TableFinderBucketName,
-      Key: file.name,
-      Body: file,
+  // getSpace method where will fetch the all the data from backend dynamodb database and display it here
+  public async getSpaces(): Promise<SpaceEntry[]> {
+    const getSpacesResult = await fetch(travelTalesAPIEndpoint, {
+      method: "GET",
+      headers: {
+        Authorization: this.authService.jwtToken!,
+      },
     });
-    await this.s3Client.send(command);
-    return `https://${command.input.Bucket}.s3.${this.awsRegion}.amazonaws.com/${command.input.Key}`;
+    const getSpacesResultJson = await getSpacesResult.json();
+    return getSpacesResultJson;
+  }
+
+  public isAuthorized() {
+    return this.authService.isAuthorized();
   }
 }
