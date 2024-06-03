@@ -1,6 +1,6 @@
 # Travel Tales App
 
-Travel Tales is a serverless web application designed to provide users with an interactive platform to share and explore travel experiences. The frontend is built with React and TypeScript, while the backend is developed with AWS services to create a robust, scalable, and efficient infrastructure.
+Travel Tales App is a serverless web application designed to provide users with an interactive platform to share and explore travel experiences. The frontend is built with React and TypeScript, while the backend is developed with AWS services to create a robust, scalable, and efficient infrastructure.
 
 ## Table of Contents
 
