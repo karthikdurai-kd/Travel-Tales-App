@@ -1,8 +1,8 @@
-# Travel Tales App
+# 🌍 Travel Tales App
 
 Travel Tales App is a serverless web application designed to provide users with an interactive platform to share and explore travel experiences. The frontend is built with React and TypeScript, while the backend is developed with AWS services to create a robust, scalable, and efficient infrastructure.
 
-## Table of Contents
+## 📚 Table of Contents
 
 - [Features](#features)
 - [Technologies Used](#technologies-used)
@@ -10,14 +10,14 @@ Travel Tales App is a serverless web application designed to provide users with 
 - [Installation](#installation)
 - [Running the Application](#app-run)
 
-## Features
+## 🌟 Features
 
 - Users can create and share their travel experiences with others through the app. They can write detailed narratives, share photos, locations to enrich their stories.
 - Users can explore a diverse collection of travel stories shared by other members of the community
 - User authentication powered by AWS Cognito, ensuring that only authorized users can access and interact with the application. AWS Cognito Identity Pool is utilized to provide authenticated users with temporary credentials to access AWS services securely.
 - AWS S3 Bucket is used to securely store photos uploaded by users. This ensures that photos are stored safely and are accessible only to authorized users.
 
-## Technologies Used
+## 🛠️ Technologies Used
 
 ### Frontend
 
@@ -35,7 +35,7 @@ Travel Tales App is a serverless web application designed to provide users with 
 - AWS CDK
 - AWS CloudFormation
 
-## Architecture
+## 🏗️ Architecture
 
 The Travel Tales App is a serverless application using follows AWS services:
 
@@ -48,7 +48,7 @@ The Travel Tales App is a serverless application using follows AWS services:
 - **AWS Amplify**: Facilitates interaction between the React frontend and AWS services.
 - **AWS CloudFormation**: Uses Template files created by AWS CDK in order to create various AWS infrastructure stacks
 
-## Installation
+## 🚀 Installation
 
 ### Prerequisites
 
